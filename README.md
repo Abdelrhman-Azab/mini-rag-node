@@ -4,6 +4,13 @@ A Node.js (Express) server for uploading files. Uploads are saved to a folder on
 disk (`./files` by default). This is the first building block of a mini RAG
 system.
 
+## Documentation
+
+The [`docs/`](docs/README.md) folder explains the architecture and each layer
+in detail. It's written for Flutter developers learning Node, so it starts
+with [Node basics](docs/01-node-basics-for-flutter-devs.md) and
+[why the project is structured this way](docs/02-architecture.md).
+
 ## Requirements
 
 - Node.js >= 22.9 (the scripts use the built-in `--env-file-if-exists` and
