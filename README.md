@@ -1,10 +1,13 @@
 # mini-rag-node
 
-A Node.js (Express) server for uploading files. Uploads are saved to a folder on disk (`./files` by default). This is the first building block of a mini RAG system.
+A Node.js (Express) server for uploading files. Uploads are saved to a folder on
+disk (`./files` by default). This is the first building block of a mini RAG
+system.
 
 ## Requirements
 
-- Node.js >= 22.9 (the scripts use the built-in `--env-file-if-exists` and `--watch` flags, so `dotenv` and `nodemon` aren't needed)
+- Node.js >= 22.9 (the scripts use the built-in `--env-file-if-exists` and
+  `--watch` flags, so `dotenv` and `nodemon` aren't needed)
 
 ## Getting started
 
@@ -22,13 +25,13 @@ The server runs on `http://localhost:3000`, and all routes start with `/api/v1`.
 
 These are set in `.env`; see `.env.example`.
 
-| Variable           | Default       | Description                          |
-| ------------------ | ------------- | ------------------------------------ |
-| `NODE_ENV`         | `development` | Runtime environment                  |
-| `PORT`             | `3000`        | HTTP port                            |
+| Variable           | Default       | Description                           |
+| ------------------ | ------------- | ------------------------------------- |
+| `NODE_ENV`         | `development` | Runtime environment                   |
+| `PORT`             | `3000`        | HTTP port                             |
 | `UPLOAD_DIR`       | `./files`     | Folder where uploaded files are saved |
-| `MAX_FILE_SIZE_MB` | `50`          | Max size per file in MB              |
-| `MAX_FILES`        | `10`          | Max files per request                |
+| `MAX_FILE_SIZE_MB` | `50`          | Max size per file in MB               |
+| `MAX_FILES`        | `10`          | Max files per request                 |
 
 ## API
 
@@ -38,7 +41,8 @@ Returns `{ "status": "ok" }`.
 
 ### `POST /api/v1/files`
 
-Uploads one or more files as `multipart/form-data`, using the form field `files`.
+Uploads one or more files as `multipart/form-data`, using the form field
+`files`.
 
 ```bash
 curl -F "files=@./doc.pdf" -F "files=@./notes.txt" http://localhost:3000/api/v1/files
@@ -50,12 +54,18 @@ Response `201`:
 {
   "message": "Files uploaded successfully",
   "files": [
-    { "originalName": "doc.pdf", "savedAs": "1760000000000-doc.pdf", "size": 12345, "mimeType": "application/pdf" }
+    {
+      "originalName": "doc.pdf",
+      "savedAs": "1760000000000-doc.pdf",
+      "size": 12345,
+      "mimeType": "application/pdf"
+    }
   ]
 }
 ```
 
-Each file is saved as `<timestamp>-<sanitized name>`, so files with the same name don't overwrite each other.
+Each file is saved as `<timestamp>-<sanitized name>`, so files with the same
+name don't overwrite each other.
 
 ### `GET /api/v1/files`
 
@@ -65,7 +75,8 @@ Lists the stored files with `name`, `size` and `uploadedAt`.
 
 Errors come back as `{ "error": "<message>" }`:
 
-- `400`: no files, a file over the size limit, too many files, or the wrong field name
+- `400`: no files, a file over the size limit, too many files, or the wrong
+  field name
 - `404`: unknown route
 - `500`: unexpected error
 
@@ -83,4 +94,7 @@ src/
 └── server.js        # Entry point: prepares the upload dir, starts the server, shuts down cleanly
 ```
 
-Requests go through **route → middleware → controller → service**. Controllers don't touch the filesystem directly, and services don't know about HTTP. Because `app.js` doesn't start a server, tests can import the app without opening a port.
+Requests go through **route → middleware → controller → service**. Controllers
+don't touch the filesystem directly, and services don't know about HTTP. Because
+`app.js` doesn't start a server, tests can import the app without opening a
+port.
